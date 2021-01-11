@@ -64,7 +64,7 @@ class weekPlan{
         conn.query('UPDATE weekplan SET ? WHERE planId = ?', [post, id], function(error, results, fields){
             if (error) throw error;
             console.log('The solution is:' , results);
-            res.status(201).json({
+            res.status(203).json({
                 message: 'Week plan updated successful',
                 status: '203'
             });

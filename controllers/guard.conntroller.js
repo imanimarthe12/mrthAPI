@@ -1,10 +1,9 @@
 import jwtDecode from 'jwt-decode';
 import conn from '../config/config';
+import auth from '../helpers/authenticate';
 
 class guardController {
     static async addGuard(req, res) {
-        const token = req.headers.authorization.split(' ')[1];
-        const decoded = jwtDecode(token);
         const { firstName, lastName, nId, telephone } = req.body;
         const post = {
             nid: nId,
@@ -42,6 +41,19 @@ class guardController {
             res.status(202).json({
                 message: 'Guard deleted successful',
                 status: '202'
+            });
+        });
+    }
+
+    static async changePassword(req, res){
+        const { password } = req.body;
+        const hashedPassowrd = auth.hashPassword(password);
+        const nId = req.query.nid;
+        conn.query('UPDATE users SET password = ? WHERE user_id = ?', [hashedPassowrd, nId], function(error, results, fields){
+            if (error) throw error;
+            res.status(203).json({
+                status: 203,
+                message: "passsword successfully changed!"
             });
         });
     }

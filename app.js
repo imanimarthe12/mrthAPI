@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.route';
 import guardRoutes from './routes/guard.route';
 import weekRoutes from './routes/weekplan.route';
 import reportRoutes from './routes/report.route';
+import adminRoutes from './routes/admin.route';
 import conn from './config/config';
 
 const app = express();
@@ -19,6 +20,7 @@ app.use('/api', authRoutes);
 app.use('/api', guardRoutes);
 app.use('/api', weekRoutes);
 app.use('/api', reportRoutes);
+app.use('/api', adminRoutes);
 
 app.get('/', (req, res) => {
     res

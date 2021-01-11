@@ -2,27 +2,6 @@ import conn from '../config/config';
 import auth from '../helpers/authenticate';
 
 class userController {
-    static async signUp (req, res) {
-        const { email, firstName, lastName, phoneNumber, password } = req.body;
-        const lemail = email.toLowerCase();
-        const hashedPassowrd = auth.hashPassword(password);
-        const post = {
-            first_name: firstName,
-            last_name: lastName,
-            phone_number: phoneNumber,
-            email: lemail,
-            password: hashedPassowrd
-        }
-        conn.query('INSERT INTO users SET ?', post, function(error, results, fields){
-            if(error) throw error;
-            console.log('The solution is: ', results[0]);
-            res.status(201).json({
-                message: "Successful",
-                status: 201
-            });
-        });
-    }
-
 
     static async signIn (req, res){
         const {phoneNumber, password} = req.body;
