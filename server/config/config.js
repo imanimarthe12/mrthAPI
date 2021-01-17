@@ -1,5 +1,4 @@
 import mysql from 'mysql';
-
 const connection = mysql.createConnection({
     host: 'us-cdbr-east-03.cleardb.com',
     user: 'bef353953bfb3a',

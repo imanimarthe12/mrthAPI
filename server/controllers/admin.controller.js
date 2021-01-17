@@ -1,5 +1,8 @@
 import conn from '../config/config';
 import auth from '../helpers/authenticate';
+import nodeMailer from 'nodemailer';
+import dotEnv from 'dotenv';
+dotEnv.config();
 
 class adminController{
     static async addUser(req, res){
@@ -22,6 +25,41 @@ class adminController{
                 status: 201
             });
         });
+
+        let body = {
+            from: process.env.EMAIL_USER,
+            to: `${lemail}`,
+            subject: 'Irondo App registration',
+            html: `<h1>Irondo App registration</h1>
+            You have been registered sucessfully your email is <font color='blue'>${lemail}</font> and your password is <font color='blue'>${password}</font> you can use those credentials to login to our account
+            `
+        }
+
+        const transporter = nodeMailer.createTransport({
+            service: 'gmail',
+            auth:{
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        transporter.verify(function(error, success){
+            if(error){
+                console.log(error)
+            }else{
+                console.log('Server is ready to take our messages');
+            }
+        });
+
+        transporter.sendMail(body, (err, result) => {
+            if(err){
+                console.log(err);
+                return false
+            }
+            console.log(result);
+            console.log('Email Sent');
+        });
+
     }
 
     static async getUser(req, res){
