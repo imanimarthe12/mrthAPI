@@ -38,7 +38,7 @@ var userController = /*#__PURE__*/function () {
               case 0:
                 _req$body = req.body, email = _req$body.email, password = _req$body.password;
 
-                _config["default"].query("SELECT * FROM users WHERE email = ".concat(email), function (error, results, fields) {
+                _config["default"].query("SELECT * FROM users WHERE email='".concat(email, "'"), function (error, results, fields) {
                   if (error) throw error;
 
                   if (results[0]) {

@@ -5,7 +5,7 @@ class userController {
 
     static async signIn (req, res){
         const {email, password} = req.body;
-        conn.query(`SELECT * FROM users WHERE email = ${email}`, function (error, results, fields) {
+        conn.query(`SELECT * FROM users WHERE email='${email}'`, function (error, results, fields) {
             if (error) throw error;
             if (results[0]){
                 const compare = auth.checkPassword(password, results[0].password);
