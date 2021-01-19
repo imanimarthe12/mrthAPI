@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import morgan from "express";
+import cors from "cors";
 import authRoutes from './routes/auth.route';
 import guardRoutes from './routes/guard.route';
 import weekRoutes from './routes/weekplan.route';
@@ -11,6 +12,7 @@ import conn from './config/config';
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
