@@ -30,15 +30,15 @@ var userController = /*#__PURE__*/function () {
     key: "signIn",
     value: function () {
       var _signIn = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-        var _req$body, phoneNumber, password;
+        var _req$body, email, password;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _req$body = req.body, phoneNumber = _req$body.phoneNumber, password = _req$body.password;
+                _req$body = req.body, email = _req$body.email, password = _req$body.password;
 
-                _config["default"].query("SELECT * FROM users WHERE phone_number = ".concat(phoneNumber), function (error, results, fields) {
+                _config["default"].query("SELECT * FROM users WHERE email = ".concat(email), function (error, results, fields) {
                   if (error) throw error;
 
                   if (results[0]) {

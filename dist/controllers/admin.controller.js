@@ -9,6 +9,10 @@ var _config = _interopRequireDefault(require("../config/config"));
 
 var _authenticate = _interopRequireDefault(require("../helpers/authenticate"));
 
+var _nodemailer = _interopRequireDefault(require("nodemailer"));
+
+var _dotenv = _interopRequireDefault(require("dotenv"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -21,6 +25,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+_dotenv["default"].config();
+
 var adminController = /*#__PURE__*/function () {
   function adminController() {
     _classCallCheck(this, adminController);
@@ -30,7 +36,7 @@ var adminController = /*#__PURE__*/function () {
     key: "addUser",
     value: function () {
       var _addUser = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-        var _req$body, email, firstName, lastName, phoneNumber, password, userType, lemail, hashedPassowrd, post;
+        var _req$body, email, firstName, lastName, phoneNumber, password, userType, lemail, hashedPassowrd, post, body, transporter;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -57,7 +63,37 @@ var adminController = /*#__PURE__*/function () {
                   });
                 });
 
-              case 5:
+                body = {
+                  from: process.env.EMAIL_USER,
+                  to: "".concat(lemail),
+                  subject: 'Irondo App registration',
+                  html: "<h1>Irondo App registration</h1>\n            You have been registered sucessfully your email is <font color='blue'>".concat(lemail, "</font> and your password is <font color='blue'>").concat(password, "</font> you can use those credentials to login to our account\n            ")
+                };
+                transporter = _nodemailer["default"].createTransport({
+                  service: 'gmail',
+                  auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS
+                  }
+                });
+                transporter.verify(function (error, success) {
+                  if (error) {
+                    console.log(error);
+                  } else {
+                    console.log('Server is ready to take our messages');
+                  }
+                });
+                transporter.sendMail(body, function (err, result) {
+                  if (err) {
+                    console.log(err);
+                    return false;
+                  }
+
+                  console.log(result);
+                  console.log('Email Sent');
+                });
+
+              case 9:
               case "end":
                 return _context.stop();
             }

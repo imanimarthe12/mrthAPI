@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _nodemailer = _interopRequireDefault(require("nodemailer"));
+
+var _dotenv = _interopRequireDefault(require("dotenv"));
+
 var _config = _interopRequireDefault(require("../config/config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -19,6 +23,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+// import jwtDecode from 'jwt-decode';
+_dotenv["default"].config();
+
 var ReportController = /*#__PURE__*/function () {
   function ReportController() {
     _classCallCheck(this, ReportController);
@@ -28,13 +35,13 @@ var ReportController = /*#__PURE__*/function () {
     key: "addReport",
     value: function () {
       var _addReport = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-        var _req$body, reportNo, date, feesCollected, usedFees, restAmount, post;
+        var _req$body, reportNo, date, feesCollected, usedFees, reciepientEmail, restAmount, post, body, transporter;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _req$body = req.body, reportNo = _req$body.reportNo, date = _req$body.date, feesCollected = _req$body.feesCollected, usedFees = _req$body.usedFees;
+                _req$body = req.body, reportNo = _req$body.reportNo, date = _req$body.date, feesCollected = _req$body.feesCollected, usedFees = _req$body.usedFees, reciepientEmail = _req$body.reciepientEmail;
                 restAmount = feesCollected - usedFees;
                 post = {
                   report_no: reportNo,
@@ -52,7 +59,37 @@ var ReportController = /*#__PURE__*/function () {
                   });
                 });
 
-              case 4:
+                body = {
+                  from: process.env.EMAIL_USER,
+                  to: "".concat(reciepientEmail),
+                  subject: 'The Monthly Report of Income and Expenses of Irondo',
+                  html: "<h1>Reports</h1>\n                    <font size='5'><b>Report Number:</b> ".concat(reportNo, "</font><p></p>\n                    <font size='5'><b>Date:</b> ").concat(date, "</font><p></p>\n                    <font size='5'><b>Fees Collected:</b> ").concat(feesCollected, "</font><p></p>\n                    <font size='5'><b>Used Fees:</b> ").concat(usedFees, "</font><p></p>\n                    <font size='5'><b>Rest Amount:</b> ").concat(restAmount, "</font><p></p>")
+                };
+                transporter = _nodemailer["default"].createTransport({
+                  service: 'gmail',
+                  auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS
+                  }
+                });
+                transporter.verify(function (error, success) {
+                  if (error) {
+                    console.log(error);
+                  } else {
+                    console.log('Server is ready to take our messages');
+                  }
+                });
+                transporter.sendMail(body, function (err, result) {
+                  if (err) {
+                    console.log(err);
+                    return false;
+                  }
+
+                  console.log(result);
+                  console.log('Email Sent');
+                });
+
+              case 8:
               case "end":
                 return _context.stop();
             }
