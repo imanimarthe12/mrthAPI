@@ -26,39 +26,39 @@ class adminController{
             });
         });
 
-        let body = {
-            from: process.env.EMAIL_USER,
-            to: `${lemail}`,
-            subject: 'Irondo App registration',
-            html: `<h1>Irondo App registration</h1>
-            You have been registered sucessfully your email is <font color='blue'>${lemail}</font> and your password is <font color='blue'>${password}</font> you can use those credentials to login to our account
-            `
-        }
+        // let body = {
+        //     from: process.env.EMAIL_USER,
+        //     to: `${lemail}`,
+        //     subject: 'Irondo App registration',
+        //     html: `<h1>Irondo App registration</h1>
+        //     You have been registered sucessfully your email is <font color='blue'>${lemail}</font> and your password is <font color='blue'>${password}</font> you can use those credentials to login to our account
+        //     `
+        // }
 
-        const transporter = nodeMailer.createTransport({
-            service: 'gmail',
-            auth:{
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
+        // const transporter = nodeMailer.createTransport({
+        //     service: 'gmail',
+        //     auth:{
+        //         user: process.env.EMAIL_USER,
+        //         pass: process.env.EMAIL_PASS
+        //     }
+        // });
 
-        transporter.verify(function(error, success){
-            if(error){
-                console.log(error)
-            }else{
-                console.log('Server is ready to take our messages');
-            }
-        });
+        // transporter.verify(function(error, success){
+        //     if(error){
+        //         console.log(error)
+        //     }else{
+        //         console.log('Server is ready to take our messages');
+        //     }
+        // });
 
-        transporter.sendMail(body, (err, result) => {
-            if(err){
-                console.log(err);
-                return false
-            }
-            console.log(result);
-            console.log('Email Sent');
-        });
+        // transporter.sendMail(body, (err, result) => {
+        //     if(err){
+        //         console.log(err);
+        //         return false
+        //     }
+        //     console.log(result);
+        //     console.log('Email Sent');
+        // });
 
     }
 
