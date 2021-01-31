@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cors());
-
+app.options('*', cors());
 conn.connect();
 app.use('/api', authRoutes);
 app.use('/api', guardRoutes);
