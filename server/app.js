@@ -19,11 +19,11 @@ app.use(morgan('dev'));
 app.use(cors());
 
 conn.connect();
-app.use('/api',cors(), authRoutes);
-app.use('/api',cors(), guardRoutes);
-app.use('/api',cors(), weekRoutes);
-app.use('/api',cors(), reportRoutes);
-app.use('/api',cors(), adminRoutes);
+app.use('/api', authRoutes);
+app.use('/api', guardRoutes);
+app.use('/api', weekRoutes);
+app.use('/api', reportRoutes);
+app.use('/api', adminRoutes);
 
 app.get('/',cors(), (req, res) => {
     res
