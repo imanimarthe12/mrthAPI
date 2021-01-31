@@ -6,8 +6,6 @@ dotEnv.config();
 
 class adminController{
     static async addUser(req, res){
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
         const { email, firstName, lastName, phoneNumber, password, userType } = req.body;
         const lemail = email.toLowerCase();
         const hashedPassowrd = auth.hashPassword(password);
