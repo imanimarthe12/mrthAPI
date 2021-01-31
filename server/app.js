@@ -12,10 +12,11 @@ import conn from './config/config';
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
+app.use(cors());
 
 conn.connect();
 app.use('/api', authRoutes);
@@ -24,7 +25,7 @@ app.use('/api', weekRoutes);
 app.use('/api', reportRoutes);
 app.use('/api', adminRoutes);
 
-app.get('/', (req, res) => {
+app.get('/',cors(), (req, res) => {
     res
         .type('json')
         .status(200)
