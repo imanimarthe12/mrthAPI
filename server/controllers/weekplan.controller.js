@@ -12,7 +12,8 @@ class weekPlan{
             week_no: weekNo,
             month: month,
             team: team,
-            team_leader: teamLeader
+            team_leader: teamLeader,
+            planId: null
         }
         conn.query('INSERT INTO weekplan SET ?', post, function(error, results, fields){
             if (error) throw error;
