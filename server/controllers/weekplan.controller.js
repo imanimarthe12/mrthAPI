@@ -3,8 +3,6 @@ import jwtDecode from 'jwt-decode';
 
 class weekPlan{
     static async addPlan(req, res){
-        const token = req.headers.authorization.split(' ')[1];
-        const decoded = jwtDecode(token);
         const { date, day, weekNo, month, team, teamLeader } = req.body;
         const post = {
             date: date,
