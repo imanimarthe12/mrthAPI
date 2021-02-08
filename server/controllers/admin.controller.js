@@ -75,7 +75,7 @@ class adminController{
 
     static async deleteUser(req, res){
         const id = req.query.id
-        conn.query('DELETE FROM users WHERE user_id = ?', [id], function(error, results, fields ){
+        conn.query('DELETE FROM users WHERE user_id=?', [id], function(error, results, fields ){
             if (error) throw error;
             res.status(202).json({
                 message: "Deleted Successful",

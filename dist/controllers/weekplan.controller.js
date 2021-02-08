@@ -30,14 +30,12 @@ var weekPlan = /*#__PURE__*/function () {
     key: "addPlan",
     value: function () {
       var _addPlan = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-        var token, decoded, _req$body, date, day, weekNo, month, team, teamLeader, post;
+        var _req$body, date, day, weekNo, month, team, teamLeader, post;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                token = req.headers.authorization.split(' ')[1];
-                decoded = (0, _jwtDecode["default"])(token);
                 _req$body = req.body, date = _req$body.date, day = _req$body.day, weekNo = _req$body.weekNo, month = _req$body.month, team = _req$body.team, teamLeader = _req$body.teamLeader;
                 post = {
                   date: date,
@@ -45,7 +43,8 @@ var weekPlan = /*#__PURE__*/function () {
                   week_no: weekNo,
                   month: month,
                   team: team,
-                  team_leader: teamLeader
+                  team_leader: teamLeader,
+                  planId: null
                 };
 
                 _config["default"].query('INSERT INTO weekplan SET ?', post, function (error, results, fields) {
@@ -57,7 +56,7 @@ var weekPlan = /*#__PURE__*/function () {
                   });
                 });
 
-              case 5:
+              case 3:
               case "end":
                 return _context.stop();
             }

@@ -149,7 +149,7 @@ var adminController = /*#__PURE__*/function () {
               case 0:
                 id = req.query.id;
 
-                _config["default"].query('DELETE FROM users WHERE user_id = ?', [id], function (error, results, fields) {
+                _config["default"].query('DELETE FROM users WHERE user_id=?', [id], function (error, results, fields) {
                   if (error) throw error;
                   res.status(202).json({
                     message: "Deleted Successful",
