@@ -3,9 +3,8 @@ import bodyParser from "body-parser";
 import morgan from "express";
 import cors from "cors";
 import authRoutes from './routes/auth.route';
-import guardRoutes from './routes/guard.route';
-import weekRoutes from './routes/weekplan.route';
-import reportRoutes from './routes/report.route';
+import commanderRoutes from './routes/commander.route';
+import collectorRoutes from './routes/collector.route';
 import adminRoutes from './routes/admin.route';
 import conn from './config/config';
 
@@ -30,9 +29,8 @@ app.use((req, res, next) => {
 conn.connect();
 
 app.use('/api', authRoutes);
-app.use('/api', guardRoutes);
-app.use('/api', weekRoutes);
-app.use('/api', reportRoutes);
+app.use('/api', commanderRoutes);
+app.use('/api', collectorRoutes);
 app.use('/api', adminRoutes);
 
 app.get('/',cors(), (req, res) => {

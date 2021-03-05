@@ -1,69 +1,44 @@
 import conn from '../config/config';
 import auth from '../helpers/authenticate';
-import nodeMailer from 'nodemailer';
 import dotEnv from 'dotenv';
 dotEnv.config();
 
 class adminController{
-    static async addUser(req, res){
-        const { email, firstName, lastName, phoneNumber, password, userType } = req.body;
-        const lemail = email.toLowerCase();
+
+    static async addStaff(req, res){
+        const { StaffName, PhoneNumber, Position, password } = req.body;
         const hashedPassowrd = auth.hashPassword(password);
         const post = {
-            first_name: firstName,
-            last_name: lastName,
-            phone_number: phoneNumber,
-            email: lemail,
-            password: hashedPassowrd,
-            user_type: userType
+            StaffName: StaffName,
+            PhoneNumber: PhoneNumber,
+            Position: Position
         }
-        conn.query('INSERT INTO users SET ?', post, function(error, results, fields){
-            if(error) throw error;
-            console.log('The solution is: ', results[0]);
-            res.status(201).json({
-                message: "Successful",
-                status: 201
+        const userPost = {
+            phoneNumber: PhoneNumber,
+            password: hashedPassowrd,
+            usertype: Position
+        }
+        conn.query('SELECT * FROM staff WHERE PhoneNumber = ?', [PhoneNumber], function(error, results, fields) {
+            if (results[0]) {
+                return res.json({ message: 'Another user is using the same phone number'});
+            }
+
+            conn.query('INSERT INTO staff SET ?', post, function(error, results, fields){
+                if(error) throw error;
+
+                conn.query('INSERT INTO users SET ?', userPost, function(error, results, fields) {
+                    if (error) throw error;
+                    res.status(201).json({
+                        message: "Staff Successful Added",
+                        status: 201
+                    });
+                })
             });
         });
-
-        let body = {
-            from: process.env.EMAIL_USER,
-            to: `${lemail}`,
-            subject: 'Irondo App registration',
-            html: `<h1>Irondo App registration</h1>
-            You have been registered sucessfully your email is <font color='blue'>${lemail}</font> and your password is <font color='blue'>${password}</font> you can use those credentials to login to our account
-            `
-        }
-
-        const transporter = nodeMailer.createTransport({
-            service: 'gmail',
-            auth:{
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
-
-        transporter.verify(function(error, success){
-            if(error){
-                console.log(error)
-            }else{
-                console.log('Server is ready to take our messages');
-            }
-        });
-
-        transporter.sendMail(body, (err, result) => {
-            if(err){
-                console.log(err);
-                return false
-            }
-            console.log(result);
-            console.log('Email Sent');
-        });
-
     }
 
-    static async getUser(req, res){
-        conn.query('SELECT * FROM users;', function(error, results, fields){
+    static async getStaff(req, res){
+        conn.query('SELECT * FROM staff;', function(error, results, fields){
             if(error) throw error;
             res.status(200).json({
                 message: "Successful",
@@ -73,13 +48,86 @@ class adminController{
         });
     }
 
-    static async deleteUser(req, res){
-        const id = req.query.id
-        conn.query('DELETE FROM users WHERE user_id=?', [id], function(error, results, fields ){
-            if (error) throw error;
-            res.status(202).json({
-                message: "Deleted Successful",
-                status: 202
+    static async addSector(req, res){
+        const {sectorName} = req.body;
+        const data = {
+            sectorName: sectorName,
+        }
+        conn.query('INSERT INTO sector SET ?', data, function(error, results, fields ){
+            if(error){
+                return res.json({
+                    errorMessage: 'Sector must not be empty'
+                })
+            };
+            res.status(201).json({
+                message: "Successful",
+                status: 201
+            });
+        });
+    }
+
+    static async addCell(req, res){
+        const {cellName} = req.body;
+        const data = {
+            cellName: cellName,
+        }
+        conn.query('INSERT INTO cell SET ?', data, function(error, results, fields ){
+            if(error){
+                return res.json({
+                    errorMessage: 'Cell must not be empty'
+                })
+            };
+            res.status(201).json({
+                message: "Successful",
+                status: 201
+            });
+        });
+    }
+
+    static async addVillage(req, res){
+        const {villageName} = req.body;
+        const data = {
+            villageName: villageName
+        }
+        conn.query('INSERT INTO village SET ?', data, function(error, results, fields) {
+            if(error){
+                return res.json({
+                    errorMessage: 'Village must not be empty'
+                })
+            };
+            res.status(201).json({
+                message: 'Successful',
+                status: 201
+            })
+        })
+    }
+
+    static async getSectors(req, res){
+        conn.query('SELECT * FROM sector;', function(error, results, fields){
+            res.status(200).json({
+                message: "Successful",
+                status: 200,
+                results: results
+            });
+        });
+    }
+
+    static async getCells(req, res){
+        conn.query('SELECT * FROM cell;', function(error, results, fields){
+            res.status(200).json({
+                message: "Successful",
+                status: 200,
+                results: results
+            });
+        });
+    }
+
+    static async getVillages(req, res){
+        conn.query('SELECT * FROM village;', function(error, results, fields){
+            res.status(200).json({
+                message: "Successful",
+                status: 200,
+                results: results
             });
         });
     }
